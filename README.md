@@ -29,6 +29,7 @@ Built with the powerful **MERN (MongoDB, Express, React, Node.js)** stack.
 
 ## 📁 Project Structure
 
+
 modern-ecommerce/
 ├── client/ # React frontend
 │ └── src/pages/ # User Pages
@@ -38,11 +39,7 @@ modern-ecommerce/
 │ ├── models/ # Mongoose Models
 │ └── config.env # Env Config (not included)
 
-yaml
-Copy
-Edit
 
----
 
 ## 🧠 Tech Stack
 
@@ -89,34 +86,26 @@ Edit
 ### 🛠️ Steps
 
 1. **Clone the Repository**
-```bash
+
 git clone https://github.com/ayushmanmishra18/MyShop.git
 Install Client Dependencies
 
-bash
-Copy
-Edit
+
 cd client
 npm install
 Install Server Dependencies
 
-bash
-Copy
-Edit
+
 cd ../server
 npm install
 Start Backend
 
-bash
-Copy
-Edit
+
 cd server
 npm run dev
 Start Frontend
 
-bash
-Copy
-Edit
+
 cd ../client
 npm start
 🌍 App runs at:
@@ -128,11 +117,8 @@ Server: http://localhost:5000
 📄 Environment Variables
 Create a .env file inside /server with the following:
 
-ini
-Copy
-Edit
+
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
 EMAIL_USER=your_email@example.com
 EMAIL_PASS=your_email_password
