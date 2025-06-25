@@ -1,3 +1,11 @@
+<h1 align="center">🛍️ MyShop</h1>
+<p align="center">A fully-featured modern eCommerce platform built with the <b>MERN</b> stack.</p>
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Stack-MERN-informational?style=flat-square&logo=mongodb&logoColor=white&color=47A248"/>
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Status-Active-blue?style=flat-square"/>
+</div>
 🌐 Overview
 
 **MyShop** is a dynamic and scalable full-stack 🛒 eCommerce application with features like:
