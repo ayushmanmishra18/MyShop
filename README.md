@@ -1,4 +1,4 @@
-<h1 align="center">🛍️ MyShop</h1>
+<h1 align="center">🛍️ MyShop _____IN PROGRESS________</h1>
 <p align="center">A modern full-stack eCommerce platform built with the MERN stack</p>
 
 <p align="center">
