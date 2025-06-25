@@ -1,146 +1,131 @@
 <h1 align="center">🛍️ MyShop</h1>
-<p align="center">A fully-featured modern eCommerce platform built with the <b>MERN</b> stack.</p>
+<p align="center">A modern full-stack eCommerce platform built with the MERN stack</p>
 
-<div align="center">
-  <img src="https://img.shields.io/badge/Stack-MERN-informational?style=flat-square&logo=mongodb&logoColor=white&color=47A248"/>
+<p align="center">
+  <img src="https://img.shields.io/badge/Stack-MERN-informational?style=flat-square&logo=mongodb&logoColor=white&color=4AB197"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square"/>
-  <img src="https://img.shields.io/badge/Status-Active-blue?style=flat-square"/>
-</div>
-🌐 Overview
-
-**MyShop** is a dynamic and scalable full-stack 🛒 eCommerce application with features like:
-
-✨ **OTP-based user authentication**  
-🧾 **Shopping cart and Stripe checkout**  
-📦 **Order tracking and admin management**  
-🎛️ **Admin dashboard for full control**  
-Built with the powerful **MERN (MongoDB, Express, React, Node.js)** stack.
+  <img src="https://img.shields.io/badge/Status-Production-blue?style=flat-square"/>
+</p>
 
 ---
 
-## 🚀 Key Features
+## 📦 About the Project
 
-### 👥 User Side
-- 🔐 Register/Login with OTP via email
-- 🛍️ Browse products by category
-- 🛒 Add/remove products to cart
-- 💳 Secure checkout via Stripe
-- 📜 View profile and order history
+**MyShop** is a sleek and scalable full-stack eCommerce application with essential features for both customers and administrators. Built using the powerful **MERN** stack, it includes:
 
-### 🛠️ Admin Side
-- 🧑‍💼 Role-based admin login
-- 📦 Manage products (CRUD)
-- 📋 View & manage orders
-- 📊 Admin dashboard panel
+- 🔐 OTP-based secure user authentication  
+- 🛍️ Real-time product browsing and cart  
+- 💳 Stripe-powered payment system  
+- 🧑‍💼 Admin dashboard for product and order control  
+- 📊 Order tracking & user profiles  
+
+---
+
+## ✨ Features Overview
+
+### 👤 User Module
+- ✅ Register and login via email OTP verification
+- 🛒 Add/remove products from the cart
+- 💳 Secure Stripe checkout flow
+- 📜 View past orders and profile
+
+### 🛠️ Admin Module
+- 🔐 Role-based access for Admin
+- 📦 Add, edit, or remove products
+- 📋 View and update order statuses
+- 🧾 Dashboard analytics (basic)
+
+---
+
+## 🧠 Tech Stack
+
+| Category    | Technology                                        |
+|-------------|---------------------------------------------------|
+| 🖥 Frontend  | React.js, React Router, Axios, Context API        |
+| 🧠 Backend   | Node.js, Express.js, Mongoose, Nodemailer, JWT    |
+| 💾 Database  | MongoDB (Cloud/Local)                             |
+| 🔒 Security  | OTP, JWT, Role-based Access                       |
+| 💳 Payments  | Stripe Integration                                |
 
 ---
 
 ## 📁 Project Structure
 
-
 modern-ecommerce/
 ├── client/ # React frontend
-│ └── src/pages/ # User Pages
-│ └── src/pages/admin/ # Admin Pages
-├── server/ # Node.js/Express backend
-│ ├── routes/ # API Endpoints
-│ ├── models/ # Mongoose Models
-│ └── config.env # Env Config (not included)
+│ ├── src/pages/ # User pages
+│ └── src/pages/admin/ # Admin dashboard
+├── server/ # Express backend
+│ ├── routes/ # API endpoints
+│ ├── models/ # MongoDB schemas
+│ └── config.env # Environment variables
 
-
-
-## 🧠 Tech Stack
-
-| Layer       | Technologies Used                                         |
-|-------------|-----------------------------------------------------------|
-| 💻 Frontend | React.js, Axios, React Router, Context API                |
-| 🧠 Backend  | Node.js, Express.js, Mongoose, Nodemailer, JWT            |
-| 💾 Database | MongoDB (Cloud or Local)                                  |
-| 💰 Payments | Stripe Integration                                        |
-| 🔐 Security | OTP, JWT, dotenv, Role-based access                       |
 
 ---
 
-## 🔐 Authentication & Payments
+## ⚙️ Getting Started
 
-- ✅ Email-based OTP verification via **Nodemailer**
-- 🔑 JWT-based user sessions with role differentiation
-- 💳 Secure payments through **Stripe API**
-
----
-
-## 📡 Sample API Endpoints
-
-| Method | Endpoint                  | Description                  |
-|--------|---------------------------|------------------------------|
-| POST   | `/api/auth/register`      | Register with email OTP     |
-| POST   | `/api/auth/verify-otp`    | Verify OTP                  |
-| POST   | `/api/auth/login`         | User login                  |
-| GET    | `/api/products`           | Get product list            |
-| POST   | `/api/cart`               | Add/update user cart        |
-| POST   | `/api/orders`             | Place order (Stripe)        |
+### 📋 Prerequisites
+- Node.js (v14 or above)
+- MongoDB (local or Atlas)
+- Stripe test account
 
 ---
 
-## ⚙️ Setup & Installation
+### 🛠 Installation
 
-### 📦 Prerequisites
-- Node.js v14+
-- MongoDB Atlas or Local DB
-- Stripe Developer Account
 
----
-
-### 🛠️ Steps
-
-1. **Clone the Repository**
-
+# Clone the repository
 git clone https://github.com/ayushmanmishra18/MyShop.git
-Install Client Dependencies
+cd MyShop
 
-
+# Install client dependencies
 cd client
 npm install
-Install Server Dependencies
 
-
+# Install server dependencies
 cd ../server
 npm install
-Start Backend
 
-
+# Start backend
 cd server
 npm run dev
-Start Frontend
 
-
+# Start frontend
 cd ../client
 npm start
-🌍 App runs at:
 
-Client: http://localhost:3000
+Frontend ➝ http://localhost:3000
+Backend ➝ http://localhost:5000
 
-Server: http://localhost:5000
-
-📄 Environment Variables
-Create a .env file inside /server with the following:
-
+🔐 Environment Variables
+Create a .env file inside /server with the following values:
 
 PORT=5000
-JWT_SECRET=your_jwt_secret_key
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
 EMAIL_USER=your_email@example.com
 EMAIL_PASS=your_email_password
 CLIENT_URL=http://localhost:3000
 STRIPE_SECRET_KEY=your_stripe_secret_key
-📸 Screenshots (optional)
-Add a few UI screenshots here – product page, cart, checkout, and admin dashboard for better visual appeal.
 
-📜 License
-Licensed under the MIT License.
-Free to use, modify, and share 🙌
+| Method | Endpoint               | Description         |
+| ------ | ---------------------- | ------------------- |
+| POST   | `/api/auth/register`   | Register & send OTP |
+| POST   | `/api/auth/verify-otp` | Verify OTP          |
+| POST   | `/api/auth/login`      | User login          |
+| GET    | `/api/products`        | List products       |
+| POST   | `/api/cart`            | Manage cart         |
+| POST   | `/api/orders`          | Place order         |
+
+
+📄 License
+Distributed under the MIT License.
+Feel free to use, modify, and share 🚀
 
 🙋‍♂️ Author
 Ayushman Mishra
 📧 ayushmanmishraji@gmail.com
-🔗 GitHub Profile
+🔗 GitHub
 
+⭐️ Support
