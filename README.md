@@ -1,107 +1,139 @@
-🛒 MyShop
-A modern full-stack eCommerce application built with the MERN stack
+🌐 Overview
+MyShop is a dynamic and scalable full-stack 🛒 eCommerce application with features like:
 
-📦 Overview
-MyShop is a powerful and responsive full-stack e-commerce platform built using the MERN stack (MongoDB, Express.js, React.js, Node.js). It includes features for both users and admins, with secure authentication, cart and checkout functionality, order management, and payment integration.
+✨ OTP-based user authentication
+🧾 Shopping cart and Stripe checkout
+📦 Order tracking and admin management
+🎛️ Admin dashboard for full control
+Built with the powerful MERN (MongoDB, Express, React, Node.js) stack.
 
-🚀 Features
-👤 User Side
-User registration and login with email-based OTP verification
+🚀 Key Features
+👥 User Side
+🔐 Register/Login with OTP via email
 
-Product browsing with detailed product pages
+🛍️ Browse products by category
 
-Shopping cart functionality
+🛒 Add/remove products to cart
 
-Checkout and order placement
+💳 Secure checkout via Stripe
 
-Stripe-based payment integration
+📜 View profile and order history
 
-View profile and past orders
+🛠️ Admin Side
+🧑‍💼 Role-based admin login
 
-🛠️ Admin Dashboard
-Secure login with role-based access
+📦 Manage products (CRUD)
 
-Add, update, and delete products
+📋 View & manage orders
 
-View and manage all customer orders
+📊 Admin dashboard panel
 
-Dashboard interface for product/order analytics
-
-🗂️ Project Structure
+📁 Project Structure
+bash
+Copy
+Edit
 modern-ecommerce/
-├── client/ – React frontend
-│  ├── src/pages/ – User pages (Home, Products, Cart, Checkout, etc.)
-│  └── src/pages/admin/ – Admin pages (Dashboard, Product CRUD, Orders)
-├── server/ – Node.js/Express backend
-│  ├── routes/ – API endpoints (auth.js, products.js, etc.)
-│  ├── models/ – Mongoose schemas (User, Product, Order, Cart)
-│  └── config.env – Environment variables file
+├── client/             # React frontend
+│   └── src/pages/          # User Pages
+│   └── src/pages/admin/    # Admin Pages
+├── server/             # Node.js/Express backend
+│   ├── routes/             # API Endpoints
+│   ├── models/             # Mongoose Models
+│   └── config.env          # Env Config (not included)
+🧠 Tech Stack
+Layer	Technologies Used
+💻 Frontend	React.js, Axios, React Router, Context API
+🧠 Backend	Node.js, Express.js, Mongoose, Nodemailer, JWT
+💾 Database	MongoDB (Cloud or Local)
+💰 Payments	Stripe Integration
+🔐 Security	OTP, JWT, dotenv, Role-based access
 
-⚙️ Tech Stack
-Frontend: React, React Router, Axios, Context API
+🔐 Authentication & Payments
+✅ Email-based OTP verification via Nodemailer
 
-Backend: Node.js, Express.js, Mongoose
+🔑 JWT-based user sessions with role differentiation
 
-Authentication: JWT, OTP via Email (Nodemailer)
+💳 Secure payments through Stripe API
 
-Database: MongoDB
+📡 Sample API Endpoints
+Method	Endpoint	Description
+POST	/api/auth/register	Register with email OTP
+POST	/api/auth/verify-otp	Verify OTP
+POST	/api/auth/login	User login
+GET	/api/products	Get product list
+POST	/api/cart	Add/update user cart
+POST	/api/orders	Place order (Stripe)
 
-Payments: Stripe API
+⚙️ Setup & Installation
+📦 Prerequisites
+Node.js v14+
 
-Others: dotenv, concurrently, nodemon
+MongoDB Atlas or Local DB
 
-🧪 API Endpoints (Examples)
-POST /api/auth/register – Register a user and send OTP
+Stripe Developer Account
 
-POST /api/auth/verify-otp – Verify OTP to activate account
+🛠️ Steps
+Clone the Repository
 
-POST /api/auth/login – Login
+bash
+Copy
+Edit
+git clone https://github.com/ayushmanmishra18/MyShop.git
+Install Client Dependencies
 
-GET /api/products – Fetch all products
+bash
+Copy
+Edit
+cd client
+npm install
+Install Server Dependencies
 
-POST /api/cart – Add to/manage cart
+bash
+Copy
+Edit
+cd ../server
+npm install
+Start Backend
 
-POST /api/orders – Place order with Stripe
+bash
+Copy
+Edit
+cd server
+npm run dev
+Start Frontend
 
-🧾 Environment Variables
-Create a .env file in the /server folder with:
+bash
+Copy
+Edit
+cd ../client
+npm start
+🌍 App runs at:
+
+Client: http://localhost:3000
+
+Server: http://localhost:5000
+
+📄 Environment Variables
+Create a .env file inside /server with the following:
 
 ini
 Copy
 Edit
-PORT=5000  
-MONGO_URI=your_mongodb_uri  
-JWT_SECRET=your_jwt_secret  
-EMAIL_USER=your_email@example.com  
-EMAIL_PASS=your_email_password  
-CLIENT_URL=http://localhost:3000  
-STRIPE_SECRET_KEY=your_stripe_secret_key  
-🛠️ Getting Started
-1. Clone the Repo
-git clone https://github.com/ayushmanmishra18/MyShop.git
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+EMAIL_USER=your_email@example.com
+EMAIL_PASS=your_email_password
+CLIENT_URL=http://localhost:3000
+STRIPE_SECRET_KEY=your_stripe_secret_key
+📸 Screenshots (optional)
+Add a few UI screenshots here – product page, cart, checkout, and admin dashboard for better visual appeal.
 
-2. Install Dependencies
-Frontend:
-cd client && npm install
-
-Backend:
-cd ../server && npm install
-
-3. Run the Application
-Start Backend:
-cd server && npm run dev
-
-Start Frontend:
-cd ../client && npm start
-
-Frontend runs at: http://localhost:3000
-
-Backend runs at: http://localhost:5000
-
-📄 License
-This project is licensed under the MIT License.
+📜 License
+Licensed under the MIT License.
+Free to use, modify, and share 🙌
 
 🙋‍♂️ Author
 Ayushman Mishra
 📧 ayushmanmishraji@gmail.com
-🔗 GitHub
+🔗 GitHub Profile
