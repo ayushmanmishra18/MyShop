@@ -1,83 +1,95 @@
 🌐 Overview
-MyShop is a dynamic and scalable full-stack 🛒 eCommerce application with features like:
 
-✨ OTP-based user authentication
-🧾 Shopping cart and Stripe checkout
-📦 Order tracking and admin management
-🎛️ Admin dashboard for full control
-Built with the powerful MERN (MongoDB, Express, React, Node.js) stack.
+**MyShop** is a dynamic and scalable full-stack 🛒 eCommerce application with features like:
 
-🚀 Key Features
-👥 User Side
-🔐 Register/Login with OTP via email
+✨ **OTP-based user authentication**  
+🧾 **Shopping cart and Stripe checkout**  
+📦 **Order tracking and admin management**  
+🎛️ **Admin dashboard for full control**  
+Built with the powerful **MERN (MongoDB, Express, React, Node.js)** stack.
 
-🛍️ Browse products by category
+---
 
-🛒 Add/remove products to cart
+## 🚀 Key Features
 
-💳 Secure checkout via Stripe
+### 👥 User Side
+- 🔐 Register/Login with OTP via email
+- 🛍️ Browse products by category
+- 🛒 Add/remove products to cart
+- 💳 Secure checkout via Stripe
+- 📜 View profile and order history
 
-📜 View profile and order history
+### 🛠️ Admin Side
+- 🧑‍💼 Role-based admin login
+- 📦 Manage products (CRUD)
+- 📋 View & manage orders
+- 📊 Admin dashboard panel
 
-🛠️ Admin Side
-🧑‍💼 Role-based admin login
+---
 
-📦 Manage products (CRUD)
+## 📁 Project Structure
 
-📋 View & manage orders
-
-📊 Admin dashboard panel
-
-📁 Project Structure
-bash
-Copy
-Edit
 modern-ecommerce/
-├── client/             # React frontend
-│   └── src/pages/          # User Pages
-│   └── src/pages/admin/    # Admin Pages
-├── server/             # Node.js/Express backend
-│   ├── routes/             # API Endpoints
-│   ├── models/             # Mongoose Models
-│   └── config.env          # Env Config (not included)
-🧠 Tech Stack
-Layer	Technologies Used
-💻 Frontend	React.js, Axios, React Router, Context API
-🧠 Backend	Node.js, Express.js, Mongoose, Nodemailer, JWT
-💾 Database	MongoDB (Cloud or Local)
-💰 Payments	Stripe Integration
-🔐 Security	OTP, JWT, dotenv, Role-based access
+├── client/ # React frontend
+│ └── src/pages/ # User Pages
+│ └── src/pages/admin/ # Admin Pages
+├── server/ # Node.js/Express backend
+│ ├── routes/ # API Endpoints
+│ ├── models/ # Mongoose Models
+│ └── config.env # Env Config (not included)
 
-🔐 Authentication & Payments
-✅ Email-based OTP verification via Nodemailer
-
-🔑 JWT-based user sessions with role differentiation
-
-💳 Secure payments through Stripe API
-
-📡 Sample API Endpoints
-Method	Endpoint	Description
-POST	/api/auth/register	Register with email OTP
-POST	/api/auth/verify-otp	Verify OTP
-POST	/api/auth/login	User login
-GET	/api/products	Get product list
-POST	/api/cart	Add/update user cart
-POST	/api/orders	Place order (Stripe)
-
-⚙️ Setup & Installation
-📦 Prerequisites
-Node.js v14+
-
-MongoDB Atlas or Local DB
-
-Stripe Developer Account
-
-🛠️ Steps
-Clone the Repository
-
-bash
+yaml
 Copy
 Edit
+
+---
+
+## 🧠 Tech Stack
+
+| Layer       | Technologies Used                                         |
+|-------------|-----------------------------------------------------------|
+| 💻 Frontend | React.js, Axios, React Router, Context API                |
+| 🧠 Backend  | Node.js, Express.js, Mongoose, Nodemailer, JWT            |
+| 💾 Database | MongoDB (Cloud or Local)                                  |
+| 💰 Payments | Stripe Integration                                        |
+| 🔐 Security | OTP, JWT, dotenv, Role-based access                       |
+
+---
+
+## 🔐 Authentication & Payments
+
+- ✅ Email-based OTP verification via **Nodemailer**
+- 🔑 JWT-based user sessions with role differentiation
+- 💳 Secure payments through **Stripe API**
+
+---
+
+## 📡 Sample API Endpoints
+
+| Method | Endpoint                  | Description                  |
+|--------|---------------------------|------------------------------|
+| POST   | `/api/auth/register`      | Register with email OTP     |
+| POST   | `/api/auth/verify-otp`    | Verify OTP                  |
+| POST   | `/api/auth/login`         | User login                  |
+| GET    | `/api/products`           | Get product list            |
+| POST   | `/api/cart`               | Add/update user cart        |
+| POST   | `/api/orders`             | Place order (Stripe)        |
+
+---
+
+## ⚙️ Setup & Installation
+
+### 📦 Prerequisites
+- Node.js v14+
+- MongoDB Atlas or Local DB
+- Stripe Developer Account
+
+---
+
+### 🛠️ Steps
+
+1. **Clone the Repository**
+```bash
 git clone https://github.com/ayushmanmishra18/MyShop.git
 Install Client Dependencies
 
@@ -137,3 +149,4 @@ Free to use, modify, and share 🙌
 Ayushman Mishra
 📧 ayushmanmishraji@gmail.com
 🔗 GitHub Profile
+
