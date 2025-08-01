@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { errorHandler } = require('./utils/errorHandler');
+const authRoutes = require('./routes/authRoutes');
 
 // Load env vars
 dotenv.config();
@@ -23,14 +24,14 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Enable CORS
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? 'https://your-frontend-domain.com' 
-    : 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL,
   credentials: true
 }));
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/addresses', require('./routes/addressRoutes'));
+app.use('/api/v1/reviews', require('./routes/reviewRoutes'));
 app.use('/api/products', require('./routes/products'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/cart', require('./routes/cart'));

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, clearError } from '../store/slices/authSlice';
+import { loginUser, clearError } from '../store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -25,7 +25,7 @@ const Login = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(login(form));
+    dispatch(loginUser(form));
   };
 
   return (
@@ -44,4 +44,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;

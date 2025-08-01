@@ -1,7 +1,7 @@
 const express = require('express');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
-const { protect, authorizeRoles } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -87,7 +87,7 @@ router.get('/myorders', protect, async (req, res, next) => {
 // @desc    Get all orders - Admin
 // @route   GET /api/orders
 // @access  Private/Admin
-router.get('/', protect, authorizeRoles('admin'), async (req, res, next) => {
+router.get('/', protect, authorize('admin'), async (req, res, next) => {
   try {
     const orders = await Order.find().populate('user', 'name email');
 
@@ -110,7 +110,7 @@ router.get('/', protect, authorizeRoles('admin'), async (req, res, next) => {
 // @desc    Update / Process order - Admin
 // @route   PUT /api/orders/:id
 // @access  Private/Admin
-router.put('/:id', protect, authorizeRoles('admin'), async (req, res, next) => {
+router.put('/:id', protect, authorize('admin'), async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id);
 
@@ -148,7 +148,7 @@ router.put('/:id', protect, authorizeRoles('admin'), async (req, res, next) => {
 // @desc    Delete order
 // @route   DELETE /api/orders/:id
 // @access  Private/Admin
-router.delete('/:id', protect, authorizeRoles('admin'), async (req, res, next) => {
+router.delete('/:id', protect, authorize('admin'), async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id);
 

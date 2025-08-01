@@ -1,31 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getProfile,
-  updateProfile,
-  addOrUpdateAddress,
-  deleteAddress,
-  changePassword,
-  clearError
+import { 
+  getCurrentUser, 
+  updateUserProfile, 
+  changeUserPassword, 
+  clearError, 
+  logout 
 } from '../store/slices/authSlice';
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { user, addresses, loading, error, passwordMessage } = useSelector(state => state.auth);
+  const { user, loading, error, isAuthenticated } = useSelector(state => state.auth);
+  
+  // Form states
+  const [profileForm, setProfileForm] = useState({
+    name: '',
+    email: '',
+    phoneNumber: ''
+  });
+  
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: '',
+    newPassword: ''
+  });
+  
+  const [activeTab, setActiveTab] = useState('profile');
 
-  // Profile form state
-  const [profileForm, setProfileForm] = useState({ name: '', email: '', phoneNumber: '' });
-  // Address form state
-  const [addressForm, setAddressForm] = useState({ street: '', city: '', state: '', zipCode: '', country: '' });
-  const [editAddressIndex, setEditAddressIndex] = useState(null);
-  // Password form state
-  const [passwordForm, setPasswordForm] = useState({ currentPassword: '', newPassword: '' });
-
+  // Load user data when component mounts
   useEffect(() => {
-    dispatch(getProfile());
-    return () => { dispatch(clearError()); };
-  }, [dispatch]);
+    if (isAuthenticated) {
+      dispatch(getCurrentUser());
+    }
+    
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch, isAuthenticated]);
 
+  // Update profile form when user data is loaded
   useEffect(() => {
     if (user) {
       setProfileForm({
@@ -36,94 +48,217 @@ const Profile = () => {
     }
   }, [user]);
 
-  // Profile update
-  const handleProfileChange = e => {
-    setProfileForm({ ...profileForm, [e.target.name]: e.target.value });
-  };
-  const handleProfileSubmit = e => {
-    e.preventDefault();
-    dispatch(updateProfile(profileForm));
-  };
-
-  // Address add/edit
-  const handleAddressChange = e => {
-    setAddressForm({ ...addressForm, [e.target.name]: e.target.value });
-  };
-  const handleAddressSubmit = e => {
-    e.preventDefault();
-    dispatch(addOrUpdateAddress({ address: addressForm, index: editAddressIndex }));
-    setAddressForm({ street: '', city: '', state: '', zipCode: '', country: '' });
-    setEditAddressIndex(null);
-  };
-  const handleEditAddress = (addr, idx) => {
-    setAddressForm(addr);
-    setEditAddressIndex(idx);
-  };
-  const handleDeleteAddress = idx => {
-    dispatch(deleteAddress(idx));
+  // Handle profile form changes
+  const handleProfileChange = (e) => {
+    const { name, value } = e.target;
+    setProfileForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-  // Password change
-  const handlePasswordChange = e => {
-    setPasswordForm({ ...passwordForm, [e.target.name]: e.target.value });
-  };
-  const handlePasswordSubmit = e => {
+  // Handle profile form submission
+  const handleProfileSubmit = (e) => {
     e.preventDefault();
-    dispatch(changePassword(passwordForm));
+    dispatch(updateUserProfile(profileForm));
+  };
+
+  // Handle password form changes
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Handle password form submission
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    dispatch(changeUserPassword(passwordForm));
     setPasswordForm({ currentPassword: '', newPassword: '' });
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-900 via-primary-900 to-dark-800 py-12 px-4">
-      <div className="max-w-3xl mx-auto bg-dark-800 rounded-4xl shadow-large p-8 animate-fade-in">
-        <h2 className="text-3xl font-bold font-display text-primary-400 mb-6 text-center">Your Profile</h2>
-        {loading && <div className="text-primary-400 text-center mb-4">Loading...</div>}
-        {error && <div className="text-red-500 text-center mb-4">{error}</div>}
-        {/* Profile Info */}
-        <form className="space-y-4 mb-8" onSubmit={handleProfileSubmit}>
-          <h3 className="text-xl font-semibold text-dark-50 mb-2">Profile Info</h3>
-          <input name="name" type="text" placeholder="Name" value={profileForm.name} onChange={handleProfileChange} className="w-full px-4 py-2 rounded bg-primary-100 text-black border border-primary-300" />
-          <input name="email" type="email" placeholder="Email" value={profileForm.email} onChange={handleProfileChange} className="w-full px-4 py-2 rounded bg-primary-100 text-black border border-primary-300" />
-          <input name="phoneNumber" type="text" placeholder="Phone Number" value={profileForm.phoneNumber} onChange={handleProfileChange} className="w-full px-4 py-2 rounded bg-primary-100 text-black border border-primary-300" />
-          <button type="submit" className="w-full py-2 rounded-4xl bg-primary-500 hover:bg-primary-600 text-dark-50 font-semibold transition">Update Profile</button>
-        </form>
-        {/* Addresses */}
-        <div className="mb-8">
-          <h3 className="text-xl font-semibold text-dark-50 mb-2">Addresses</h3>
-          <form className="space-y-2 mb-4" onSubmit={handleAddressSubmit}>
-            <div className="flex gap-2 flex-wrap">
-              <input name="street" type="text" placeholder="Street" value={addressForm.street} onChange={handleAddressChange} className="flex-1 px-2 py-1 rounded bg-primary-100 text-black border border-primary-300" />
-              <input name="city" type="text" placeholder="City" value={addressForm.city} onChange={handleAddressChange} className="flex-1 px-2 py-1 rounded bg-primary-100 text-black border border-primary-300" />
-              <input name="state" type="text" placeholder="State" value={addressForm.state} onChange={handleAddressChange} className="flex-1 px-2 py-1 rounded bg-primary-100 text-black border border-primary-300" />
-              <input name="zipCode" type="text" placeholder="Zip Code" value={addressForm.zipCode} onChange={handleAddressChange} className="flex-1 px-2 py-1 rounded bg-primary-100 text-black border border-primary-300" />
-              <input name="country" type="text" placeholder="Country" value={addressForm.country} onChange={handleAddressChange} className="flex-1 px-2 py-1 rounded bg-primary-100 text-black border border-primary-300" />
-            </div>
-            <button type="submit" className="py-1 px-4 rounded-4xl bg-primary-500 hover:bg-primary-600 text-dark-50 font-semibold transition">{editAddressIndex !== null ? 'Update Address' : 'Add Address'}</button>
-            {editAddressIndex !== null && <button type="button" className="ml-2 py-1 px-4 rounded-4xl bg-dark-700 text-primary-400 font-semibold transition" onClick={() => { setAddressForm({ street: '', city: '', state: '', zipCode: '', country: '' }); setEditAddressIndex(null); }}>Cancel</button>}
-          </form>
-          <ul className="divide-y divide-dark-700">
-            {addresses && addresses.map((addr, idx) => (
-              <li key={idx} className="py-2 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                <span className="text-dark-50">{addr.street}, {addr.city}, {addr.state}, {addr.zipCode}, {addr.country}</span>
-                <span>
-                  <button className="mr-2 px-3 py-1 rounded bg-primary-400 text-dark-900 font-semibold hover:bg-primary-500 transition" onClick={() => handleEditAddress(addr, idx)}>Edit</button>
-                  <button className="px-3 py-1 rounded bg-red-500 text-white font-semibold hover:bg-red-600 transition" onClick={() => handleDeleteAddress(idx)}>Delete</button>
-                </span>
-              </li>
-            ))}
-          </ul>
+  // Handle logout
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
+          <h2 className="text-2xl font-bold mb-4">Please log in</h2>
+          <p>You need to be logged in to view this page.</p>
         </div>
-        {/* Change Password */}
-        <form className="space-y-4" onSubmit={handlePasswordSubmit}>
-          <h3 className="text-xl font-semibold text-dark-50 mb-2">Change Password</h3>
-          <input name="currentPassword" type="password" placeholder="Current Password" value={passwordForm.currentPassword} onChange={handlePasswordChange} className="w-full px-4 py-2 rounded bg-primary-100 text-black border border-primary-300" />
-          <input name="newPassword" type="password" placeholder="New Password" value={passwordForm.newPassword} onChange={handlePasswordChange} className="w-full px-4 py-2 rounded bg-primary-100 text-black border border-primary-300" />
-          <button type="submit" className="w-full py-2 rounded-4xl bg-primary-500 hover:bg-primary-600 text-dark-50 font-semibold transition">Change Password</button>
-          {passwordMessage && <div className="text-green-500 text-center mt-2">{passwordMessage}</div>}
-        </form>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
+            <h1 className="text-2xl font-bold text-gray-900">Profile Settings</h1>
+          </div>
+          
+          <div className="border-b border-gray-200">
+            <nav className="flex -mb-px">
+              <button
+                onClick={() => setActiveTab('profile')}
+                className={`whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm ${
+                  activeTab === 'profile'
+                    ? 'border-indigo-500 text-indigo-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Profile
+              </button>
+              <button
+                onClick={() => setActiveTab('password')}
+                className={`whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm ${
+                  activeTab === 'password'
+                    ? 'border-indigo-500 text-indigo-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Change Password
+              </button>
+            </nav>
+          </div>
+
+          {error && (
+            <div className="bg-red-50 border-l-4 border-red-400 p-4 m-4">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm text-red-700">{error}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="px-4 py-5 sm:p-6">
+            {activeTab === 'profile' ? (
+              <form onSubmit={handleProfileSubmit}>
+                <div className="space-y-6">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={profileForm.name}
+                      onChange={handleProfileChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                      Email address
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      value={profileForm.email}
+                      onChange={handleProfileChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      name="phoneNumber"
+                      id="phoneNumber"
+                      value={profileForm.phoneNumber}
+                      onChange={handleProfileChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                  </div>
+
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                    >
+                      {loading ? 'Saving...' : 'Save Changes'}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={handlePasswordSubmit}>
+                <div className="space-y-6">
+                  <div>
+                    <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700">
+                      Current Password
+                    </label>
+                    <input
+                      type="password"
+                      name="currentPassword"
+                      id="currentPassword"
+                      value={passwordForm.currentPassword}
+                      onChange={handlePasswordChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      name="newPassword"
+                      id="newPassword"
+                      value={passwordForm.newPassword}
+                      onChange={handlePasswordChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      required
+                      minLength={6}
+                    />
+                  </div>
+
+                  <div className="flex justify-between items-center">
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Logout
+                    </button>
+                    
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                    >
+                      {loading ? 'Updating...' : 'Update Password'}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Profile; 
+export default Profile;

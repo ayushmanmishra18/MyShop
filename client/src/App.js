@@ -1,15 +1,21 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useSelector } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
+import { store, persistor } from './store/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
-import { getCurrentUser } from './store/slices/authSlice';
+// Theme
+import theme from './theme';
 
 // Components
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
-import LoadingSpinner from './components/ui/LoadingSpinner';
+import Loader from './components/Loader';
+import Navbar from './components/layout/Navbar';
 
 // Pages
 import Home from './pages/Home';
@@ -19,131 +25,114 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import VerifyEmail from './pages/VerifyEmail';
+import ResendVerification from './pages/ResendVerification';
 import Profile from './pages/Profile';
 import Orders from './pages/Orders';
 import OrderDetail from './pages/OrderDetail';
-import AdminDashboard from './pages/admin/Dashboard';
-import AdminProducts from './pages/admin/Products';
-import AdminOrders from './pages/admin/Orders';
 import Payment from './pages/Payment';
 import Review from './pages/Review';
 import UserDashboard from './pages/UserDashboard';
 import VerifyOtp from './pages/VerifyOtp';
-import ProductCreate from './pages/admin/ProductCreate';
-import ProductEdit from './pages/admin/ProductEdit';
+import NotFound from './pages/NotFound';
 
-// Protected Route Component
-import ProtectedRoute from './components/auth/ProtectedRoute';
-import AdminRoute from './components/auth/AdminRoute';
+// Admin Pages
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminProducts from './pages/admin/AdminProducts';
+import AdminUsers from './pages/admin/AdminUsers';
+import AdminOrders from './pages/admin/AdminOrders';
 
+// Protected Routes
+import ProtectedRoute from './components/routes/ProtectedRoute';
+import AdminRoute from './components/routes/AdminRoute';
+
+// PersistGate wrapper
+const PersistGateWrapper = ({ children }) => (
+  <PersistGate loading={<Loader fullScreen />} persistor={persistor}>
+    {children}
+  </PersistGate>
+);
+
+// Main App wrapper component
+function AppWrapper() {
+  return (
+    <Provider store={store}>
+      <PersistGateWrapper>
+        <App />
+      </PersistGateWrapper>
+    </Provider>
+  );
+}
+
+// Main App component
 function App() {
-  const { isAuthenticated, user } = useSelector(state => state.auth);
+  const { isAuthenticated, isAdmin, loading, user } = useSelector(state => state.auth);
 
-  useEffect(() => {
-    // Check if user is logged in on app load
-    const token = localStorage.getItem('token');
-    if (token) {
-      // store.dispatch(getCurrentUser());
-      // Instead, you should use a dispatch from useDispatch
-      // But for now, comment this out to avoid errors
-    }
-  }, []);
+  if (loading) {
+    return <Loader fullScreen />;
+  }
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Router>
-        <div className="min-h-screen bg-gradient-to-br from-dark-900 via-primary-900 to-dark-800 flex flex-col font-display">
-          <Header />
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <ToastContainer position="bottom-right" autoClose={3000} />
           <main className="flex-grow">
             <Routes>
+              {/* Public Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
               <Route path="/products/:id" element={<ProductDetail />} />
               <Route path="/cart" element={<Cart />} />
-              <Route path="/payment" element={<Payment />} />
-              <Route path="/review" element={<Review />} />
-              
-              {/* Auth Routes */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+              <Route 
+                path="/login" 
+                element={
+                  user ? <Navigate to="/" replace /> : <Login />
+                } 
+              />
+              <Route 
+                path="/register" 
+                element={
+                  user ? <Navigate to="/" replace /> : <Register />
+                } 
+              />
               <Route path="/verify-otp" element={<VerifyOtp />} />
               
-              {/* Protected Routes */}
-              <Route path="/checkout" element={
-                <ProtectedRoute>
-                  <Checkout />
-                </ProtectedRoute>
-              } />
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              } />
-              <Route path="/orders" element={
-                <ProtectedRoute>
-                  <Orders />
-                </ProtectedRoute>
-              } />
-              <Route path="/orders/:id" element={
-                <ProtectedRoute>
-                  <OrderDetail />
-                </ProtectedRoute>
-              } />
+              {/* Email Verification */}
+              <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/resend-verification" element={<ResendVerification />} />
               
-              {/* Admin Routes */}
-              <Route path="/admin" element={
-                <AdminRoute>
-                  <AdminDashboard />
-                </AdminRoute>
-              } />
-              <Route path="/admin/products" element={
-                <AdminRoute>
-                  <AdminProducts />
-                </AdminRoute>
-              } />
-              <Route path="/admin/orders" element={
-                <AdminRoute>
-                  <AdminOrders />
-                </AdminRoute>
-              } />
-              <Route path="/admin/products/create" element={
-                <AdminRoute>
-                  <ProductCreate />
-                </AdminRoute>
-              } />
-              <Route path="/admin/products/edit/:id" element={
-                <AdminRoute>
-                  <ProductEdit />
-                </AdminRoute>
-              } />
+              {/* Protected User Routes */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/orders/:id" element={<OrderDetail />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/payment" element={<Payment />} />
+                <Route path="/review/:productId" element={<Review />} />
+                <Route path="/dashboard" element={<UserDashboard />} />
+              </Route>
 
-              {/* Role-based Dashboard Route */}
-              <Route path="/dashboard" element={
-                isAuthenticated ? (
-                  user?.role === 'admin' ? <AdminDashboard /> : <UserDashboard />
-                ) : (
-                  <Login />
-                )
-              } />
+              {/* Admin Routes */}
+              <Route element={<AdminRoute />}>
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin/products" element={<AdminProducts />} />
+                <Route path="/admin/users" element={<AdminUsers />} />
+                <Route path="/admin/orders" element={<AdminOrders />} />
+              </Route>
+
+              {/* 404 Route */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           <Footer />
         </div>
       </Router>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
-    </>
+    </ThemeProvider>
   );
 }
 
-export default App; 
+export default AppWrapper;

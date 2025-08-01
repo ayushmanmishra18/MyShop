@@ -6,7 +6,6 @@ import {
   ArrowRight, 
   Star, 
   ShoppingCart, 
-  Heart,
   Truck,
   Shield,
   RefreshCw,

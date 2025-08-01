@@ -7,6 +7,7 @@ const initialState = {
   loading: false,
   notifications: [],
   theme: 'light',
+  isAdminSidebarOpen: false,
 };
 
 const uiSlice = createSlice({
@@ -35,14 +36,11 @@ const uiSlice = createSlice({
       state.loading = action.payload;
     },
     addNotification: (state, action) => {
-      state.notifications.push({
-        id: Date.now(),
-        ...action.payload,
-      });
+      state.notifications.push(action.payload);
     },
     removeNotification: (state, action) => {
       state.notifications = state.notifications.filter(
-        notification => notification.id !== action.payload
+        (notification) => notification.id !== action.payload
       );
     },
     clearNotifications: (state) => {
@@ -53,6 +51,15 @@ const uiSlice = createSlice({
     },
     setTheme: (state, action) => {
       state.theme = action.payload;
+    },
+    toggleAdminSidebar: (state) => {
+      state.isAdminSidebarOpen = !state.isAdminSidebarOpen;
+    },
+    closeAdminSidebar: (state) => {
+      state.isAdminSidebarOpen = false;
+    },
+    openAdminSidebar: (state) => {
+      state.isAdminSidebarOpen = true;
     },
   },
 });
@@ -70,6 +77,11 @@ export const {
   clearNotifications,
   toggleTheme,
   setTheme,
+  toggleAdminSidebar,
+  closeAdminSidebar,
+  openAdminSidebar,
 } = uiSlice.actions;
 
-export default uiSlice.reducer; 
+export const selectUi = (state) => state.ui;
+
+export default uiSlice.reducer;

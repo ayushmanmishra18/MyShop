@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { ShoppingCart, User, LogOut, Settings } from 'lucide-react';
+import { ShoppingCart, User, Settings } from 'lucide-react';
 import { logout } from '../../store/slices/authSlice';
 
 const Header = () => {
